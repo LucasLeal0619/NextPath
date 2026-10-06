@@ -1,0 +1,5 @@
+﻿.auth-form-wrap { transform:translateY(-8px); }
+.auth-logo--form { font-size:22px; }
+.auth-logo--form .auth-logo__mark { width:52px; height:52px; }
+.auth-form-wrap .form-check { margin-top:-8px; margin-bottom:18px !important; }
+.auth-terms-text { color:var(--primary); font-weight:600; }

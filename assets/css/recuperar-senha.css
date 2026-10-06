@@ -1,0 +1,9 @@
+﻿.auth-form-wrap { transform:translateY(10px); }
+.auth-form-wrap .mb-4 { margin-bottom:24px !important; }
+.auth-recovery-card { display:flex; align-items:flex-start; gap:12px; margin:24px 0; padding:20px 24px 14px; border-radius:12px; background:#eff6ff; }
+.auth-recovery-card[hidden] { display:none; }
+.auth-recovery-icon { flex-shrink:0; width:22px; height:22px; margin-top:6px; color:#1954ed; }
+.auth-recovery-card h3 { margin:0 0 4px; font-size:13px; line-height:20px; font-weight:700; }
+.auth-recovery-card p { margin:0; color:var(--text-muted); font-size:12px; line-height:18px; }
+.auth-back-link { display:flex; align-items:center; justify-content:center; gap:18px; font-size:14px; }
+.auth-back-link span { font-size:24px; line-height:24px; font-weight:400; }
