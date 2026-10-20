@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resumo da sua evolução no NextPath.">
+    <title>NextPath | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="app-body">
+    <!-- Sidebar: copie este bloco para as outras páginas e mude apenas qual link tem "active".
+         Links com href="#" mostram o aviso "próxima etapa"; troque pelo arquivo quando a página existir. -->
+    <aside class="sidebar">
+        <a class="sidebar-logo" href="dashboard.html">
+            <span class="sidebar-logo-mark"><svg viewBox="0 0 32 44" aria-hidden="true"><path d="M17 0 2 28h14v16l15-29H17z" fill="currentColor"/></svg></span>
+            NextPath
+        </a>
+
+        <nav aria-label="Menu principal">
+            <ul class="sidebar-menu">
+                <li><a class="sidebar-link active" href="dashboard.html" aria-current="page"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-person"></i> Perfil Profissional</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-list-ul"></i> Minhas Habilidades</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-diagram-3"></i> SkillTree</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-briefcase"></i> Vagas</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-file-text"></i> Detalhes da Vaga</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-bullseye"></i> Compatibilidade com a Vaga</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-bar-chart"></i> Gaps</a></li>
+                <li><a class="sidebar-link" href="#"><i class="bi bi-bezier2"></i> Trilhas Recomendadas</a></li>
+            </ul>
+        </nav>
+
+        <button class="sidebar-sair" type="button" id="botao-sair"><i class="bi bi-box-arrow-right"></i> Sair</button>
+    </aside>
+
+    <main class="app-main">
+        <header class="app-header">
+            <div>
+                <h1 class="app-title">Dashboard</h1>
+                <p id="dashboard-subtitulo" class="app-subtitle"></p>
+            </div>
+
+            <button class="usuario" type="button" data-bs-toggle="modal" data-bs-target="#modal-perfil" title="Editar perfil">
+                <span class="text-end">
+                    <strong id="usuario-nome" class="usuario-nome"></strong>
+                    <span id="usuario-cargo" class="usuario-cargo"></span>
+                </span>
+                <span id="usuario-iniciais" class="usuario-avatar"></span>
+            </button>
+        </header>
+
+        <!-- Todos os valores abaixo são preenchidos pelo dashboard.js a partir do localStorage -->
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <section class="card-np">
+                    <div class="card-np-header">
+                        <div>
+                            <h2 class="card-np-title">Seu progresso geral</h2>
+                            <p class="card-np-subtitle">Evolução das habilidades mapeadas</p>
+                        </div>
+                        <button class="btn-card" type="button" data-bs-toggle="modal" data-bs-target="#modal-habilidades"><i class="bi bi-plus-lg"></i> Habilidade</button>
+                    </div>
+
+                    <div class="d-flex align-items-center flex-wrap gap-4 mt-4">
+                        <div id="progresso-circulo" class="progresso-circulo">
+                            <span id="progresso-geral">0%</span>
+                        </div>
+                        <div>
+                            <strong id="total-habilidades" class="numero">0</strong>
+                            <span class="numero-legenda">Habilidades mapeadas</span>
+                        </div>
+                        <div>
+                            <strong id="em-desenvolvimento" class="numero numero-laranja">0</strong>
+                            <span class="numero-legenda">Em desenvolvimento</span>
+                        </div>
+                    </div>
+
+                    <p id="progresso-dica" class="card-np-dica"></p>
+                </section>
+            </div>
+
+            <div class="col-lg-6">
+                <section class="card-np">
+                    <div class="card-np-header">
+                        <h2 class="card-np-title">Próximo objetivo</h2>
+                        <button id="botao-objetivo" class="btn-card" type="button" data-bs-toggle="modal" data-bs-target="#modal-perfil">Definir</button>
+                    </div>
+
+                    <div class="objetivo">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-bullseye objetivo-icone"></i>
+                            <div>
+                                <strong id="objetivo-titulo" class="objetivo-titulo"></strong>
+                                <span id="objetivo-descricao" class="numero-legenda"></span>
+                            </div>
+                        </div>
+                        <div class="barra mt-5"><div id="barra-objetivo" class="barra-preenchida"></div></div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-6">
+                <section class="card-np">
+                    <h2 class="card-np-title mb-3">Resumo do seu perfil</h2>
+
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="resumo-item">
+                                <strong id="resumo-total" class="numero">0</strong>
+                                <span class="numero-legenda">Habilidades</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="resumo-item">
+                                <strong id="resumo-em-desenvolvimento" class="numero numero-laranja">0</strong>
+                                <span class="numero-legenda">Em andamento</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="resumo-item">
+                                <strong id="resumo-nao-iniciadas" class="numero numero-cinza">0</strong>
+                                <span class="numero-legenda">Não iniciadas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nivel">
+                        <span class="nivel-label">Nível profissional atual</span>
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <strong id="nivel-profissional" class="nivel-nome">Não definido</strong>
+                            <span id="nivel-proximo" class="numero-legenda"></span>
+                        </div>
+                        <div class="barra"><div id="barra-nivel" class="barra-preenchida"></div></div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-6">
+                <section class="card-np">
+                    <h2 class="card-np-title mb-3">Próximos passos</h2>
+                    <ul id="lista-passos" class="passos"></ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: perfil profissional (edição rápida; a página completa será perfil.html) -->
+    <div class="modal fade" id="modal-perfil" tabindex="-1" aria-labelledby="modal-perfil-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form id="perfil-form" class="modal-content app-modal">
+                <div class="modal-header border-0">
+                    <h2 id="modal-perfil-titulo" class="modal-title fs-5 fw-bold">Seu perfil profissional</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="perfil-area" class="form-label">Área de interesse</label>
+                        <select id="perfil-area" name="area" class="form-select">
+                            <option value="">Selecione</option>
+                            <option>Back-end</option>
+                            <option>Front-end</option>
+                            <option>Full Stack</option>
+                            <option>Dados</option>
+                            <option>DevOps / Cloud</option>
+                            <option>Mobile</option>
+                            <option>QA / Testes</option>
+                            <option>UX / UI</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil-cargo" class="form-label">Cargo atual</label>
+                        <input id="perfil-cargo" name="cargoAtual" class="form-control" type="text" placeholder="Ex.: Estudante, Desenvolvedor Júnior">
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil-nivel" class="form-label">Nível profissional</label>
+                        <select id="perfil-nivel" name="nivel" class="form-select">
+                            <option value="">Selecione</option>
+                            <option>Estagiário</option>
+                            <option>Júnior</option>
+                            <option>Pleno</option>
+                            <option>Sênior</option>
+                            <option>Especialista</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="perfil-objetivo" class="form-label">Objetivo profissional</label>
+                        <input id="perfil-objetivo" name="objetivo" class="form-control" type="text" placeholder="Ex.: Desenvolvedor Back-end Pleno">
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="submit">Salvar perfil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: habilidades (edição rápida; a página completa será habilidades.html) -->
+    <div class="modal fade" id="modal-habilidades" tabindex="-1" aria-labelledby="modal-habilidades-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content app-modal">
+                <div class="modal-header border-0">
+                    <h2 id="modal-habilidades-titulo" class="modal-title fs-5 fw-bold">Minhas habilidades</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="habilidade-form" class="row g-3 align-items-end" novalidate>
+                        <div class="col-md-5">
+                            <label for="habilidade-nome" class="form-label">Habilidade</label>
+                            <input id="habilidade-nome" name="nome" class="form-control" type="text" list="sugestoes-habilidades" placeholder="Ex.: JavaScript">
+                            <datalist id="sugestoes-habilidades">
+                                <option value="JavaScript"><option value="TypeScript"><option value="Python"><option value="Java">
+                                <option value="C#"><option value="PHP"><option value="Node.js"><option value="React">
+                                <option value="HTML e CSS"><option value="SQL"><option value="PostgreSQL"><option value="MongoDB">
+                                <option value="Git"><option value="Docker"><option value="Linux"><option value="AWS">
+                                <option value="APIs REST"><option value="Testes automatizados">
+                            </datalist>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="habilidade-categoria" class="form-label">Categoria</label>
+                            <select id="habilidade-categoria" name="categoria" class="form-select">
+                                <option>Linguagens</option>
+                                <option>Back-end</option>
+                                <option>Front-end</option>
+                                <option>Banco de Dados</option>
+                                <option>Infraestrutura</option>
+                                <option>Ferramentas</option>
+                                <option>Soft skills</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100" type="submit"><i class="bi bi-plus-lg"></i> Adicionar</button>
+                        </div>
+                        <div class="col-12">
+                            <label for="habilidade-progresso" class="form-label">Quanto você já domina? <span id="habilidade-progresso-texto" class="text-primary">0% · Não iniciada</span></label>
+                            <input id="habilidade-progresso" name="progresso" class="form-range" type="range" min="0" max="100" step="10" value="0">
+                        </div>
+                    </form>
+                    <div id="habilidade-message" class="auth-message" role="status" aria-live="polite"></div>
+
+                    <hr>
+                    <p id="habilidades-vazio" class="estado-vazio">Você ainda não adicionou habilidades.</p>
+                    <ul id="lista-habilidades" class="lista-habilidades"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modelo de uma linha da lista de habilidades (clonado pelo dashboard.js) -->
+    <template id="modelo-habilidade">
+        <li class="habilidade-item">
+            <div class="habilidade-info">
+                <strong class="habilidade-nome"></strong>
+                <span class="habilidade-categoria"></span>
+            </div>
+            <input class="form-range habilidade-progresso" type="range" min="0" max="100" step="10" aria-label="Progresso da habilidade">
+            <span class="habilidade-status"></span>
+            <button class="btn-remover" type="button" aria-label="Remover habilidade"><i class="bi bi-trash"></i></button>
+        </li>
+    </template>
+
+    <!-- Toast para avisos rápidos -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-texto" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

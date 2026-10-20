@@ -9,10 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.svg">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/recuperar-senha.css">
 </head>
-<body>
+<body class="auth-body">
     <main class="auth-page auth-page--recovery">
         <section class="auth-sidebar" aria-labelledby="recovery-title">
             <div class="auth-sidebar__content">
@@ -52,7 +52,7 @@
 
                     <button class="btn btn-primary auth-button" type="submit">Enviar link de recuperação</button>
 
-                    <div id="recovery-success" class="auth-recovery-card">
+                    <div class="auth-recovery-card">
                         <svg class="auth-recovery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
                         <div><h3>Verifique sua caixa de entrada</h3>
                         <p>O e-mail pode levar alguns minutos. Confira também a pasta de spam ou promoções.</p></div>
@@ -65,7 +65,33 @@
         </section>
     </main>
 
+    <!-- Modal para redefinir a senha (simulação: não há envio real de e-mail) -->
+    <div class="modal fade" id="modal-nova-senha" tabindex="-1" aria-labelledby="modal-nova-senha-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form id="nova-senha-form" class="modal-content auth-modal" novalidate>
+                <div class="modal-header border-0">
+                    <h2 id="modal-nova-senha-titulo" class="modal-title fs-5 fw-bold">Criar nova senha</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nova-senha" class="form-label">Nova senha</label>
+                        <div class="auth-input"><svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input class="form-control" type="password" id="nova-senha" name="novaSenha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" required></div>
+                    </div>
+                    <div>
+                        <label for="confirmar-nova-senha" class="form-label">Confirmar nova senha</label>
+                        <div class="auth-input"><svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input class="form-control" type="password" id="confirmar-nova-senha" name="confirmarNovaSenha" autocomplete="new-password" placeholder="Repita a nova senha" required></div>
+                    </div>
+                    <div id="nova-senha-message" class="auth-message" role="status" aria-live="polite"></div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-primary auth-button" type="submit">Salvar nova senha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/recuperar-senha.js"></script>
 </body>
 </html>
