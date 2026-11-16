@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Acompanhe seu nível em cada tecnologia no NextPath.">
+    <title>NextPath | Minhas Habilidades</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="app-body">
+    <aside class="sidebar">
+        <a class="sidebar-logo" href="dashboard.html">
+            <span class="sidebar-logo-mark"><svg viewBox="0 0 32 44" aria-hidden="true"><path d="M17 0 2 28h14v16l15-29H17z" fill="currentColor"/></svg></span>
+            NextPath
+        </a>
+
+        <nav aria-label="Menu principal">
+            <ul class="sidebar-menu">
+                <li><a class="sidebar-link" href="dashboard.html"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
+                <li><a class="sidebar-link" href="perfil.html"><i class="bi bi-person"></i> Perfil Profissional</a></li>
+                <li><a class="sidebar-link active" href="habilidades.html" aria-current="page"><i class="bi bi-list-ul"></i> Minhas Habilidades</a></li>
+                <li><a class="sidebar-link" href="skilltree.html"><i class="bi bi-diagram-3"></i> SkillTree</a></li>
+                <li><a class="sidebar-link" href="vagas.html"><i class="bi bi-briefcase"></i> Vagas</a></li>
+                <li><a class="sidebar-link" href="detalhes-vaga.html"><i class="bi bi-file-text"></i> Detalhes da Vaga</a></li>
+                <li><a class="sidebar-link" href="compatibilidade.html"><i class="bi bi-bullseye"></i> Compatibilidade com a Vaga</a></li>
+                <li><a class="sidebar-link" href="gaps.html"><i class="bi bi-bar-chart"></i> Gaps</a></li>
+                <li><a class="sidebar-link" href="trilhas.html"><i class="bi bi-bezier2"></i> Trilhas Recomendadas</a></li>
+            </ul>
+        </nav>
+
+        <button class="sidebar-sair" type="button" id="botao-sair"><i class="bi bi-box-arrow-right"></i> Sair</button>
+    </aside>
+
+    <main class="app-main">
+        <header class="app-header">
+            <div>
+                <h1 class="app-title">Minhas Habilidades</h1>
+                <p class="app-subtitle">Acompanhe seu nível em cada tecnologia mapeada.</p>
+            </div>
+
+            <div class="app-header-acoes">
+                <button class="btn btn-primary btn-np" type="button" data-bs-toggle="modal" data-bs-target="#modal-habilidade"><i class="bi bi-plus-lg"></i> Adicionar habilidade</button>
+
+                <a class="usuario" href="perfil.html" title="Ver perfil">
+                    <span class="text-end">
+                        <strong id="usuario-nome" class="usuario-nome"></strong>
+                        <span id="usuario-cargo" class="usuario-cargo"></span>
+                    </span>
+                    <span id="usuario-iniciais" class="usuario-avatar"></span>
+                </a>
+            </div>
+        </header>
+
+        <section class="card-np">
+            <div class="card-np-header mb-3">
+                <p id="habilidades-contagem" class="card-np-subtitle"></p>
+                <div class="busca">
+                    <i class="bi bi-search"></i>
+                    <input id="busca-habilidade" class="form-control" type="search" placeholder="Buscar habilidade" aria-label="Buscar habilidade">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="tabela-np">
+                    <thead>
+                        <tr>
+                            <th>Habilidade</th>
+                            <th>Categoria</th>
+                            <th>Nível</th>
+                            <th><span class="visually-hidden">Ações</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-habilidades"></tbody>
+                </table>
+            </div>
+
+            <p id="habilidades-vazio" class="estado-vazio py-4">
+                Você ainda não adicionou habilidades.<br>
+                <button class="btn-card mt-3" type="button" data-bs-toggle="modal" data-bs-target="#modal-habilidade"><i class="bi bi-plus-lg"></i> Adicionar a primeira</button>
+            </p>
+
+            <p class="dica">Dica: clique nas bolinhas para mudar o nível de uma habilidade.</p>
+            <div id="legenda" class="legenda"></div>
+        </section>
+    </main>
+
+    <!-- Modal: nova habilidade -->
+    <div class="modal fade" id="modal-habilidade" tabindex="-1" aria-labelledby="modal-habilidade-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form id="habilidade-form" class="modal-content app-modal" novalidate>
+                <div class="modal-header border-0">
+                    <h2 id="modal-habilidade-titulo" class="modal-title fs-5 fw-bold">Adicionar habilidade</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="habilidade-nome" class="form-label">Habilidade</label>
+                        <input id="habilidade-nome" name="nome" class="form-control" type="text" maxlength="60" list="sugestoes-habilidades" placeholder="Ex.: JavaScript">
+                        <datalist id="sugestoes-habilidades">
+                            <option value="JavaScript"><option value="TypeScript"><option value="Python"><option value="Java">
+                            <option value="C#"><option value="PHP"><option value="Node.js"><option value="React">
+                            <option value="HTML e CSS"><option value="SQL"><option value="PostgreSQL"><option value="MongoDB">
+                            <option value="Git"><option value="Docker"><option value="Linux"><option value="AWS">
+                            <option value="APIs REST"><option value="Testes automatizados"><option value="Comunicação">
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="habilidade-categoria" class="form-label">Categoria</label>
+                        <select id="habilidade-categoria" name="categoria" class="form-select">
+                            <option>Linguagens</option>
+                            <option>Front-end</option>
+                            <option>Back-end</option>
+                            <option>Banco de Dados</option>
+                            <option>Infraestrutura</option>
+                            <option>Ferramentas</option>
+                            <option>Soft skills</option>
+                            <option>Outras</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="habilidade-nivel" class="form-label">Nível atual</label>
+                        <select id="habilidade-nivel" name="nivel" class="form-select">
+                            <option value="0">Não iniciada (ainda vou estudar)</option>
+                            <option value="1">Iniciante</option>
+                            <option value="2">Básico</option>
+                            <option value="3">Intermediário</option>
+                            <option value="4">Proficiente</option>
+                            <option value="5">Avançado</option>
+                        </select>
+                    </div>
+                    <div id="habilidade-message" class="auth-message" role="status" aria-live="polite"></div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-light btn-np" type="button" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary btn-np" type="submit">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modelo de uma linha da tabela (clonado pelo habilidades.js) -->
+    <template id="modelo-linha">
+        <tr>
+            <td class="coluna-nome"></td>
+            <td class="coluna-categoria"></td>
+            <td><span class="pontos pontos-editaveis"></span> <span class="nivel-texto"></span></td>
+            <td class="text-end"><button class="btn-remover" type="button" aria-label="Remover habilidade"><i class="bi bi-trash"></i></button></td>
+        </tr>
+    </template>
+
+    <!-- Toast para avisos rápidos (usado pelo app.js) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-texto" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/habilidades.js"></script>
+</body>
+</html>

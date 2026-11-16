@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Veja as habilidades que você ainda precisa desenvolver para a vaga no NextPath.">
+    <title>NextPath | Gaps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="app-body">
+    <aside class="sidebar">
+        <a class="sidebar-logo" href="dashboard.html">
+            <span class="sidebar-logo-mark"><svg viewBox="0 0 32 44" aria-hidden="true"><path d="M17 0 2 28h14v16l15-29H17z" fill="currentColor"/></svg></span>
+            NextPath
+        </a>
+
+        <nav aria-label="Menu principal">
+            <ul class="sidebar-menu">
+                <li><a class="sidebar-link" href="dashboard.html"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
+                <li><a class="sidebar-link" href="perfil.html"><i class="bi bi-person"></i> Perfil Profissional</a></li>
+                <li><a class="sidebar-link" href="habilidades.html"><i class="bi bi-list-ul"></i> Minhas Habilidades</a></li>
+                <li><a class="sidebar-link" href="skilltree.html"><i class="bi bi-diagram-3"></i> SkillTree</a></li>
+                <li><a class="sidebar-link" href="vagas.html"><i class="bi bi-briefcase"></i> Vagas</a></li>
+                <li><a class="sidebar-link" href="detalhes-vaga.html"><i class="bi bi-file-text"></i> Detalhes da Vaga</a></li>
+                <li><a class="sidebar-link" href="compatibilidade.html"><i class="bi bi-bullseye"></i> Compatibilidade com a Vaga</a></li>
+                <li><a class="sidebar-link active" href="gaps.html" aria-current="page"><i class="bi bi-bar-chart"></i> Gaps</a></li>
+                <li><a class="sidebar-link" href="trilhas.html"><i class="bi bi-bezier2"></i> Trilhas Recomendadas</a></li>
+            </ul>
+        </nav>
+
+        <button class="sidebar-sair" type="button" id="botao-sair"><i class="bi bi-box-arrow-right"></i> Sair</button>
+    </aside>
+
+    <main class="app-main">
+        <header class="app-header">
+            <div>
+                <h1 class="app-title">Gaps</h1>
+                <p class="app-subtitle"><span id="gaps-subtitulo">Habilidades que você ainda precisa desenvolver para essa vaga.</span> <a class="link-trocar" href="vagas.html">Trocar vaga</a></p>
+            </div>
+
+            <a class="usuario" href="perfil.html" title="Ver perfil">
+                <span class="text-end">
+                    <strong id="usuario-nome" class="usuario-nome"></strong>
+                    <span id="usuario-cargo" class="usuario-cargo"></span>
+                </span>
+                <span id="usuario-iniciais" class="usuario-avatar"></span>
+            </a>
+        </header>
+
+        <!-- Mostrado quando nenhuma vaga foi escolhida ainda -->
+        <section id="sem-vaga" class="card-np sem-vaga" hidden>
+            <i class="bi bi-bar-chart"></i>
+            <h2 class="card-np-title">Nenhuma vaga selecionada</h2>
+            <p class="card-np-subtitle">Escolha uma vaga para descobrir o que falta para você alcançá-la.</p>
+            <a class="btn btn-primary btn-np mt-3" href="vagas.html">Ver vagas</a>
+        </section>
+
+        <div id="conteudo-vaga" hidden>
+            <section class="card-np mb-4">
+                <div class="table-responsive">
+                    <table class="tabela-np">
+                        <thead>
+                            <tr>
+                                <th>Habilidade</th>
+                                <th>Nível atual</th>
+                                <th>Exigido</th>
+                                <th>Progresso</th>
+                                <th><span class="visually-hidden">Ações</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-gaps"></tbody>
+                    </table>
+                </div>
+
+                <div id="sem-gaps" class="estado-vazio py-4" hidden>
+                    <i class="bi bi-patch-check-fill texto-verde fs-3"></i><br>
+                    Parabéns! Você atende a todos os requisitos desta vaga.
+                </div>
+            </section>
+
+            <section class="aviso aviso-grande">
+                <i class="bi bi-bezier2"></i>
+                <strong>Reduza esses gaps seguindo trilhas de estudo recomendadas</strong>
+                <a class="btn btn-primary btn-np ms-auto" href="trilhas.html">Ver trilhas recomendadas</a>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modelo de uma linha da tabela (clonado pelo gaps.js) -->
+    <template id="modelo-gap">
+        <tr>
+            <td class="coluna-nome"></td>
+            <td class="coluna-atual"></td>
+            <td class="coluna-exigido"></td>
+            <td>
+                <div class="gap-progresso">
+                    <div class="barra barra-laranja"><div class="barra-preenchida"></div></div>
+                    <strong class="gap-porcentagem"></strong>
+                </div>
+            </td>
+            <td class="text-end coluna-acao"></td>
+        </tr>
+    </template>
+
+    <!-- Toast para avisos rápidos (usado pelo app.js) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-texto" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/catalogo.js"></script>
+    <script src="../assets/js/gaps.js"></script>
+</body>
+</html>

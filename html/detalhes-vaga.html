@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Confira as informações completas da vaga no NextPath.">
+    <title>NextPath | Detalhes da Vaga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="app-body">
+    <aside class="sidebar">
+        <a class="sidebar-logo" href="dashboard.html">
+            <span class="sidebar-logo-mark"><svg viewBox="0 0 32 44" aria-hidden="true"><path d="M17 0 2 28h14v16l15-29H17z" fill="currentColor"/></svg></span>
+            NextPath
+        </a>
+
+        <nav aria-label="Menu principal">
+            <ul class="sidebar-menu">
+                <li><a class="sidebar-link" href="dashboard.html"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
+                <li><a class="sidebar-link" href="perfil.html"><i class="bi bi-person"></i> Perfil Profissional</a></li>
+                <li><a class="sidebar-link" href="habilidades.html"><i class="bi bi-list-ul"></i> Minhas Habilidades</a></li>
+                <li><a class="sidebar-link" href="skilltree.html"><i class="bi bi-diagram-3"></i> SkillTree</a></li>
+                <li><a class="sidebar-link" href="vagas.html"><i class="bi bi-briefcase"></i> Vagas</a></li>
+                <li><a class="sidebar-link active" href="detalhes-vaga.html" aria-current="page"><i class="bi bi-file-text"></i> Detalhes da Vaga</a></li>
+                <li><a class="sidebar-link" href="compatibilidade.html"><i class="bi bi-bullseye"></i> Compatibilidade com a Vaga</a></li>
+                <li><a class="sidebar-link" href="gaps.html"><i class="bi bi-bar-chart"></i> Gaps</a></li>
+                <li><a class="sidebar-link" href="trilhas.html"><i class="bi bi-bezier2"></i> Trilhas Recomendadas</a></li>
+            </ul>
+        </nav>
+
+        <button class="sidebar-sair" type="button" id="botao-sair"><i class="bi bi-box-arrow-right"></i> Sair</button>
+    </aside>
+
+    <main class="app-main">
+        <header class="app-header">
+            <div>
+                <h1 class="app-title">Detalhes da Vaga</h1>
+                <p class="app-subtitle">Confira as informações completas da oportunidade.</p>
+            </div>
+
+            <a class="usuario" href="perfil.html" title="Ver perfil">
+                <span class="text-end">
+                    <strong id="usuario-nome" class="usuario-nome"></strong>
+                    <span id="usuario-cargo" class="usuario-cargo"></span>
+                </span>
+                <span id="usuario-iniciais" class="usuario-avatar"></span>
+            </a>
+        </header>
+
+        <!-- Mostrado quando nenhuma vaga foi escolhida ainda -->
+        <section id="sem-vaga" class="card-np sem-vaga" hidden>
+            <i class="bi bi-briefcase"></i>
+            <h2 class="card-np-title">Nenhuma vaga selecionada</h2>
+            <p class="card-np-subtitle">Escolha uma vaga para ver os detalhes da oportunidade.</p>
+            <a class="btn btn-primary btn-np mt-3" href="vagas.html">Ver vagas</a>
+        </section>
+
+        <div id="conteudo-vaga" class="row g-4" hidden>
+            <div class="col-lg-8">
+                <section class="card-np">
+                    <div class="vaga-cabecalho">
+                        <i class="bi bi-briefcase"></i>
+                        <div>
+                            <h2 id="vaga-titulo" class="vaga-nome"></h2>
+                            <p id="vaga-meta" class="card-np-subtitle"></p>
+                        </div>
+                    </div>
+
+                    <h3 class="secao-titulo">Sobre a vaga</h3>
+                    <p id="vaga-descricao" class="texto-corrido"></p>
+
+                    <h3 class="secao-titulo">Requisitos</h3>
+                    <ul id="vaga-requisitos" class="lista-pontos"></ul>
+
+                    <h3 class="secao-titulo">Tecnologias</h3>
+                    <div id="vaga-tecnologias" class="chips"></div>
+                    <p class="dica">Em verde: tecnologias em que você já atende o nível pedido.</p>
+                </section>
+            </div>
+
+            <div class="col-lg-4 d-grid gap-4 align-content-start">
+                <section class="card-np">
+                    <h2 id="vaga-empresa" class="card-np-title mb-2"></h2>
+                    <dl class="lista-info">
+                        <div><dt>Local</dt><dd id="vaga-local"></dd></div>
+                        <div><dt>Senioridade</dt><dd id="vaga-senioridade"></dd></div>
+                        <div><dt>Tipo</dt><dd id="vaga-tipo"></dd></div>
+                    </dl>
+                    <a class="btn btn-primary btn-np w-100 justify-content-center mt-3" href="compatibilidade.html">Ver compatibilidade</a>
+                    <button id="botao-objetivo" class="btn-card w-100 mt-2 py-2" type="button"></button>
+                </section>
+
+                <section class="card-np destaque">
+                    <span class="destaque-titulo"><i class="bi bi-bullseye"></i> Compatibilidade estimada</span>
+                    <strong id="vaga-compatibilidade" class="destaque-numero"></strong>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast para avisos rápidos (usado pelo app.js) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-texto" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/catalogo.js"></script>
+    <script src="../assets/js/detalhes-vaga.js"></script>
+</body>
+</html>

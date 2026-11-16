@@ -26,6 +26,12 @@ function getUsuarioLogado() {
     return JSON.parse(sessionStorage.getItem(CHAVE_SESSAO));
 }
 
+// Salva alterações da conta logada (ex.: nome) na sessão e na lista de usuários.
+function salvarUsuarioLogado(usuario) {
+    sessionStorage.setItem(CHAVE_SESSAO, JSON.stringify(usuario));
+    salvarUsuarios(getUsuarios().map(user => user.id === usuario.id ? usuario : user));
+}
+
 // Limpa somente a sessão: conta, perfil e habilidades continuam salvos.
 function logout() {
     sessionStorage.removeItem(CHAVE_SESSAO);
@@ -38,13 +44,23 @@ function logout() {
 // Estado inicial de uma conta nova: tudo vazio, nada inventado.
 function criarDadosIniciais() {
     return {
-        perfil: { area: "", cargoAtual: "", nivel: "", objetivo: "" },
-        habilidades: []
+        perfil: { area: "", cargoAtual: "", nivel: "", objetivo: "", sobre: "" },
+        habilidades: [],
+        vagaSelecionada: null, // id da última vaga aberta (ver catalogo.js)
+        trilhas: {}            // módulos concluídos por trilha. Ex.: { docker: [0, 1] }
     };
 }
 
 function getDadosUsuario(id) {
-    return JSON.parse(localStorage.getItem(`nextpath_dados_${id}`)) || criarDadosIniciais();
+    const salvos = JSON.parse(localStorage.getItem(`nextpath_dados_${id}`)) || {};
+    const iniciais = criarDadosIniciais();
+    // Completa campos que não existiam em versões anteriores (ex.: perfil.sobre)
+    return {
+        perfil: { ...iniciais.perfil, ...salvos.perfil },
+        habilidades: salvos.habilidades || [],
+        vagaSelecionada: salvos.vagaSelecionada || null,
+        trilhas: salvos.trilhas || {}
+    };
 }
 
 function salvarDadosUsuario(id, dados) {
