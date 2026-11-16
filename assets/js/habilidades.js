@@ -114,6 +114,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-window.addEventListener("storage", () => {
-    if (usuario) renderTabela();
-});
+// Redesenha a página quando os dados mudam (ver "Tempo real" no app.js)
+atualizarPagina = renderTabela;

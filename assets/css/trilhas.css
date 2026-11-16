@@ -1,0 +1,16 @@
+/* Página trilhas: estilos usados só nesta página. O que é comum fica no style.css. */
+
+/* Trilhas: cada card recebe uma cor (azul, roxo ou ciano) pelas variáveis --cor e --cor-clara */
+.trilha.azul { --cor: #2460f3; --cor-clara: #eef4ff; }
+.trilha.roxo { --cor: #7c3aed; --cor-clara: #f3e8ff; }
+.trilha.ciano { --cor: #0891b2; --cor-clara: #cffafe; }
+.trilha .icone-quadrado { width: 56px; height: 56px; font-size: 22px; }
+.trilha-titulo { margin: 24px 0 12px; font-size: 17px; font-weight: 700; }
+.trilha .badge-np { margin: 0; background: var(--cor-clara); color: var(--cor); }
+.trilha .barra-preenchida { background: var(--cor); }
+.modulos { display: grid; gap: 10px; }
+.modulo { margin: 0; padding: 12px 14px 12px 42px; border-radius: 10px; background: var(--background); }
+.modulo .form-check-label { color: var(--text-dark); font-size: 14px; }
+.modulo .form-check-input:checked + .form-check-label { color: var(--text-muted); text-decoration: line-through; }
+.trilha-motivo { display: flex; gap: 8px; margin: 14px 0 0; color: var(--text-muted); font-size: 12px; }
+.trilha-motivo i { color: var(--orange); }

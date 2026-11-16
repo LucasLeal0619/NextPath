@@ -26,12 +26,19 @@ function gerarProximosPassos(perfil, habilidades) {
     if (!habilidades.length) {
         passos.push({ texto: "Adicione suas primeiras habilidades", link: "habilidades.html" });
     }
-    if (!perfil.objetivo) {
-        passos.push({ texto: "Defina seu objetivo profissional", link: "perfil.html" });
+    // Objetivo: definir, adicionar a vaga que almeja ou fechar os gaps dela
+    const vagaObjetivo = getVagaObjetivo();
+    if (!vagaObjetivo) {
+        passos.push(perfil.objetivo
+            ? { texto: "Adicione a vaga que você almeja", link: "vagas.html?adicionar=1" }
+            : { texto: "Defina seu objetivo profissional", link: "perfil.html" });
+    } else {
+        const gaps = analisarVaga(vagaObjetivo, habilidades).gaps.length;
+        if (gaps) passos.push({ texto: `Feche ${gaps} gap(s) para ${vagaObjetivo.titulo}`, link: `trilhas.html` });
     }
 
     // Tudo preenchido: sugere continuar evoluindo
-    if (!passos.length) {
+    if (passos.length < 2) {
         const emDesenvolvimento = contarStatus(habilidades, "em_desenvolvimento");
         if (emDesenvolvimento) {
             passos.push({ texto: `Continue desenvolvendo ${emDesenvolvimento} habilidade(s)`, link: "habilidades.html" });
@@ -82,13 +89,24 @@ function renderDashboard() {
     else if (!total) setTexto("progresso-dica", "Você ainda não adicionou habilidades.");
     else setTexto("progresso-dica", `${desenvolvidas} de ${total} habilidade(s) desenvolvida(s).`);
 
-    // Card: próximo objetivo
-    setTexto("botao-objetivo", perfil.objetivo ? "Editar" : "Definir");
-    setTexto("objetivo-titulo", perfil.objetivo || "Nenhum objetivo profissional definido");
-    if (!perfil.objetivo) setTexto("objetivo-descricao", "Defina onde você quer chegar profissionalmente.");
-    else if (!total) setTexto("objetivo-descricao", "Adicione habilidades para acompanhar este objetivo.");
-    else setTexto("objetivo-descricao", `${desenvolvidas} de ${total} habilidade(s) desenvolvida(s)`);
-    setLargura("barra-objetivo", perfil.objetivo ? progresso : 0);
+    // Card: próximo objetivo. Com vaga-objetivo, mostra a compatibilidade real com ela.
+    const vagaObjetivo = getVagaObjetivo();
+    const botaoObjetivo = document.getElementById("botao-objetivo");
+    if (vagaObjetivo) {
+        const analise = analisarVaga(vagaObjetivo, habilidades);
+        botaoObjetivo.textContent = "Ver vaga";
+        botaoObjetivo.href = `compatibilidade.html?id=${vagaObjetivo.id}`;
+        setTexto("objetivo-titulo", vagaObjetivo.titulo);
+        setTexto("objetivo-descricao", `${analise.porcentagem}% compatível • ${analise.gaps.length} gap(s) para fechar`);
+        setLargura("barra-objetivo", analise.porcentagem);
+    } else {
+        botaoObjetivo.textContent = perfil.objetivo ? "Editar" : "Definir";
+        botaoObjetivo.href = "perfil.html";
+        setTexto("objetivo-titulo", perfil.objetivo || "Nenhum objetivo profissional definido");
+        if (!perfil.objetivo) setTexto("objetivo-descricao", "Defina onde você quer chegar profissionalmente.");
+        else setTexto("objetivo-descricao", "Adicione a vaga que você almeja para acompanhar a compatibilidade.");
+        setLargura("barra-objetivo", 0);
+    }
 
     // Card: resumo do perfil
     setTexto("resumo-total", total);
@@ -111,7 +129,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if (usuario) renderDashboard();
 });
 
-// Se os dados mudarem em outra aba (ex.: página de habilidades), atualiza aqui também.
-window.addEventListener("storage", () => {
-    if (usuario) renderDashboard();
-});
+// Redesenha a página quando os dados mudam (ver "Tempo real" no app.js)
+atualizarPagina = renderDashboard;

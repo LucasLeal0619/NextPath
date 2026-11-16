@@ -1,0 +1,9 @@
+/* Página perfil: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.perfil-resumo { text-align: center; }
+.perfil-avatar { display: inline-flex; align-items: center; justify-content: center; width: 96px; height: 96px; border-radius: 50%; background: #dbe7ff; color: var(--primary); font-size: 30px; font-weight: 700; }
+.perfil-nome { margin: 16px 0 4px; font-size: 19px; font-weight: 700; word-break: break-word; }
+.badge-np.vazio { background: var(--background); color: var(--text-muted); }
+.perfil-area, .perfil-completo { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); text-align: left; }
+.perfil-area strong { font-size: 15px; }
+.campo-sobre { height: 130px; resize: vertical; line-height: 1.7; }

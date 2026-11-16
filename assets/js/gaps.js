@@ -18,6 +18,7 @@ function renderGaps() {
     gaps.forEach(gap => {
         const linha = modelo.content.cloneNode(true).querySelector("tr");
         linha.querySelector(".coluna-nome").textContent = gap.nome;
+        if (gap.desejavel) linha.querySelector(".coluna-nome").insertAdjacentHTML("beforeend", ` <span class="etiqueta">Diferencial</span>`);
         linha.querySelector(".coluna-atual").innerHTML = gerarPontos(gap.pontos);
         linha.querySelector(".coluna-exigido").innerHTML = gerarPontos(gap.nivel);
         linha.querySelector(".barra-preenchida").style.width = gap.progresso + "%";
@@ -61,6 +62,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("tabela-gaps").addEventListener("click", adicionarGap);
 });
 
-window.addEventListener("storage", () => {
-    if (usuario) renderGaps();
-});
+// Redesenha a página quando os dados mudam (ver "Tempo real" no app.js)
+atualizarPagina = renderGaps;

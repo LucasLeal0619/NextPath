@@ -10,8 +10,28 @@ function lerFormulario() {
         area: form.area.value,
         nivel: form.nivel.value,
         objetivo: form.objetivo.value.trim(),
-        sobre: form.sobre.value.trim()
+        sobre: form.sobre.value.trim(),
+        vagaObjetivo: form.vagaObjetivo.value || null
     };
+}
+
+// Opções do campo "Vaga que você almeja": as vagas do usuário (coladas ou geradas pelo objetivo).
+function preencherOpcoesDeVaga() {
+    const select = form.vagaObjetivo;
+    select.innerHTML = `<option value="">${getTodasVagas().length ? "Nenhuma" : "Adicione vagas em Vagas"}</option>`;
+    getTodasVagas().forEach(vaga => {
+        const opcao = document.createElement("option");
+        opcao.value = vaga.id;
+        opcao.textContent = `${vaga.titulo}${vaga.empresa ? " — " + vaga.empresa : ""}${vaga.gerada ? " (perfil-alvo)" : ""}`;
+        select.appendChild(opcao);
+    });
+}
+
+// Ao escolher uma vaga, o objetivo profissional recebe o título dela.
+function escolherVagaObjetivo() {
+    const vaga = getVaga(form.vagaObjetivo.value);
+    if (vaga) form.objetivo.value = vaga.titulo;
+    renderResumo(lerFormulario());
 }
 
 // Atualiza o card da esquerda com os valores recebidos (do formulário ou salvos).
@@ -40,6 +60,7 @@ function preencherFormulario() {
     form.nivel.value = perfil.nivel;
     form.objetivo.value = perfil.objetivo;
     form.sobre.value = perfil.sobre;
+    form.vagaObjetivo.value = getVaga(perfil.vagaObjetivo) ? perfil.vagaObjetivo : "";
 
     renderResumo(lerFormulario());
 }
@@ -71,7 +92,8 @@ function salvarPerfil(event) {
         cargoAtual: valores.cargoAtual,
         nivel: valores.nivel,
         objetivo: valores.objetivo,
-        sobre: valores.sobre
+        sobre: valores.sobre,
+        vagaObjetivo: valores.vagaObjetivo
     };
     salvarDadosUsuario(usuario.id, dados);
 
@@ -91,10 +113,21 @@ function cancelarEdicao() {
 document.addEventListener("DOMContentLoaded", () => {
     if (!usuario) return;
 
+    document.getElementById("sugestoes-area").innerHTML = Object.keys(TECNOLOGIAS_POR_AREA).map(area => `<option value="${area}">`).join("");
+    preencherOpcoesDeVaga();
     preencherFormulario();
 
     form.addEventListener("input", () => renderResumo(lerFormulario()));
+    form.vagaObjetivo.addEventListener("change", escolherVagaObjetivo);
     form.addEventListener("submit", salvarPerfil);
     document.getElementById("botao-editar").addEventListener("click", () => setModoEdicao(true));
     document.getElementById("botao-cancelar").addEventListener("click", cancelarEdicao);
 });
+
+// Redesenha quando os dados mudam (ver "Tempo real" no app.js), mas nunca no meio de uma edição.
+atualizarPagina = () => {
+    if (document.getElementById("perfil-campos").disabled) {
+        preencherOpcoesDeVaga();
+        preencherFormulario();
+    }
+};

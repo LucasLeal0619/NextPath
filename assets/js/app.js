@@ -87,6 +87,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCabecalho();
     document.getElementById("botao-sair").addEventListener("click", logout);
 
+    // Aviso deixado pela página anterior (ex.: "Vaga adicionada!")
+    const aviso = sessionStorage.getItem(CHAVE_AVISO);
+    if (aviso) {
+        sessionStorage.removeItem(CHAVE_AVISO);
+        mostrarToast(aviso);
+    }
+
     // Qualquer link com href="#" é de uma página que ainda não existe.
     document.addEventListener("click", event => {
         if (event.target.closest('a[href="#"]')) {
@@ -94,4 +101,26 @@ document.addEventListener("DOMContentLoaded", () => {
             mostrarToast("Esta funcionalidade será implementada na próxima etapa.");
         }
     });
+});
+
+/* ===== Tempo real =====
+   Cada página informa sua função de desenho:  atualizarPagina = renderDashboard;
+   Ela roda de novo sempre que os dados podem ter mudado:
+   - os dados mudaram em outra aba do NextPath (evento "storage");
+   - a página voltou pelo botão "Voltar" do navegador (o navegador mostra a cópia antiga);
+   - a aba voltou a ficar visível. */
+let atualizarPagina = null;
+
+function atualizarAgora() {
+    if (!usuario || !atualizarPagina) return;
+    renderCabecalho();
+    atualizarPagina();
+}
+
+window.addEventListener("storage", atualizarAgora);
+window.addEventListener("pageshow", event => {
+    if (event.persisted) atualizarAgora();
+});
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") atualizarAgora();
 });

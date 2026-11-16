@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="icon" href="../assets/img/favicon.svg">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/trilhas.css">
 </head>
 <body class="app-body">
     <aside class="sidebar">
@@ -53,21 +54,51 @@
             </a>
         </header>
 
+        <!-- De onde vêm as recomendações (vaga-objetivo e área do perfil) -->
+        <p id="base-recomendacao" class="aviso"></p>
+
         <div id="lista-trilhas" class="row g-4 mb-4"></div>
 
         <section id="trilhas-vazio" class="card-np sem-vaga mb-4" hidden>
             <i class="bi bi-bezier2"></i>
             <h2 id="trilhas-vazio-titulo" class="card-np-title"></h2>
             <p id="trilhas-vazio-texto" class="card-np-subtitle"></p>
-            <a id="trilhas-vazio-link" class="btn btn-primary btn-np mt-3" href="vagas.html">Ver vagas</a>
+            <div id="trilhas-vazio-acoes" class="d-flex justify-content-center flex-wrap gap-2 mt-3">
+                <a class="btn btn-primary btn-np" href="vagas.html?adicionar=1"><i class="bi bi-clipboard-plus"></i> Adicionar a vaga que eu almejo</a>
+                <a class="btn btn-light btn-np" href="perfil.html">Definir minha área</a>
+            </div>
         </section>
 
-        <section class="card-np explorar">
-            <div>
-                <h2 id="explorar-titulo" class="card-np-title">Quer explorar mais opções?</h2>
-                <p id="explorar-texto" class="card-np-subtitle">Veja todas as trilhas disponíveis na plataforma.</p>
-            </div>
-            <button id="botao-todas" class="btn btn-primary btn-np" type="button">Ver todas as trilhas</button>
+        <!-- O próprio usuário cria uma trilha para qualquer habilidade -->
+        <section class="card-np mb-4">
+            <h2 class="card-np-title">Quer estudar outra habilidade?</h2>
+            <p class="card-np-subtitle mb-3">Crie uma trilha para qualquer habilidade. Cada módulo concluído aumenta o seu nível nela.</p>
+            <form id="nova-trilha-form" class="row g-2 align-items-end" novalidate>
+                <div class="col-md-6">
+                    <label for="nova-trilha-habilidade" class="form-label">Habilidade</label>
+                    <input id="nova-trilha-habilidade" class="form-control" type="text" maxlength="60" list="habilidades-conhecidas" placeholder="Ex.: Docker, Figma, Excel...">
+                    <datalist id="habilidades-conhecidas"></datalist>
+                </div>
+                <div class="col-md-4">
+                    <label for="nova-trilha-nivel" class="form-label">Quero chegar ao nível</label>
+                    <select id="nova-trilha-nivel" class="form-select">
+                        <option value="2">Básico</option>
+                        <option value="3" selected>Intermediário</option>
+                        <option value="4">Proficiente</option>
+                        <option value="5">Avançado</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn btn-primary btn-np justify-content-center" type="submit"><i class="bi bi-plus-lg"></i> Criar</button>
+                </div>
+            </form>
+            <div id="nova-trilha-message" class="auth-message" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- Trilhas já concluídas pelo usuário -->
+        <section id="trilhas-concluidas" class="card-np" hidden>
+            <h2 class="card-np-title mb-3"><i class="bi bi-patch-check-fill texto-verde"></i> Trilhas concluídas</h2>
+            <div id="lista-concluidas" class="chips"></div>
         </section>
     </main>
 
@@ -87,7 +118,8 @@
                         <span class="numero-legenda">Progresso</span>
                         <strong id="modal-trilha-porcentagem"></strong>
                     </div>
-                    <div class="barra mb-4"><div id="modal-trilha-barra" class="barra-preenchida"></div></div>
+                    <div class="barra mb-2"><div id="modal-trilha-barra" class="barra-preenchida"></div></div>
+                    <p class="numero-legenda mb-4"><i class="bi bi-graph-up-arrow"></i> <span id="modal-trilha-habilidade"></span></p>
 
                     <p class="form-label">Marque os módulos que você concluiu:</p>
                     <div id="modal-trilha-modulos" class="modulos"></div>
@@ -106,7 +138,8 @@
                 <span class="icone-quadrado"><i class="bi"></i></span>
                 <h2 class="trilha-titulo"></h2>
                 <span class="badge-np trilha-nivel"></span>
-                <div class="d-flex justify-content-between mt-4 mb-2">
+                <p class="trilha-motivo"><i class="bi bi-lightbulb"></i> <span></span></p>
+                <div class="d-flex justify-content-between mt-3 mb-2">
                     <span class="numero-legenda">Progresso</span>
                     <strong class="trilha-porcentagem"></strong>
                 </div>
@@ -130,6 +163,7 @@
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/catalogo.js"></script>
+    <script src="../assets/js/leitor-vaga.js"></script>
     <script src="../assets/js/trilhas.js"></script>
 </body>
 </html>

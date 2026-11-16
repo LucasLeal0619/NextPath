@@ -1,0 +1,12 @@
+/* Página gaps: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.aviso-grande { padding: 22px 28px; }
+.aviso-grande > i { font-size: 24px; }
+.gap-progresso { display: flex; align-items: center; gap: 14px; min-width: 200px; }
+.gap-progresso .barra { flex: 1; }
+.barra-laranja .barra-preenchida { background: var(--orange); }
+.gap-porcentagem { width: 40px; color: var(--orange); font-size: 13px; }
+
+@media (max-width: 575px) {
+    .aviso-grande .btn { width: 100%; justify-content: center; }
+}

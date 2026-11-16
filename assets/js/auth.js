@@ -44,22 +44,29 @@ function logout() {
 // Estado inicial de uma conta nova: tudo vazio, nada inventado.
 function criarDadosIniciais() {
     return {
-        perfil: { area: "", cargoAtual: "", nivel: "", objetivo: "", sobre: "" },
+        // vagaObjetivo: id da vaga que o usuário almeja (define as trilhas recomendadas)
+        perfil: { area: "", cargoAtual: "", nivel: "", objetivo: "", sobre: "", vagaObjetivo: null },
         habilidades: [],
-        vagaSelecionada: null, // id da última vaga aberta (ver catalogo.js)
-        trilhas: {}            // módulos concluídos por trilha. Ex.: { docker: [0, 1] }
+        vagas: [],                  // vagas que o próprio usuário colou (ver vagas.js)
+        vagaSelecionada: null,      // id da última vaga aberta (ver catalogo.js)
+        trilhas: {},                // módulos concluídos por trilha. Ex.: { docker: [0, 1] }
+        onboardingConcluido: false  // false = mostrar a configuração inicial após o login
     };
 }
 
 function getDadosUsuario(id) {
-    const salvos = JSON.parse(localStorage.getItem(`nextpath_dados_${id}`)) || {};
+    const texto = localStorage.getItem(`nextpath_dados_${id}`);
+    const salvos = JSON.parse(texto) || {};
     const iniciais = criarDadosIniciais();
     // Completa campos que não existiam em versões anteriores (ex.: perfil.sobre)
     return {
         perfil: { ...iniciais.perfil, ...salvos.perfil },
         habilidades: salvos.habilidades || [],
+        vagas: salvos.vagas || [],
         vagaSelecionada: salvos.vagaSelecionada || null,
-        trilhas: salvos.trilhas || {}
+        trilhas: salvos.trilhas || {},
+        // Contas antigas (criadas antes do onboarding) não precisam passar por ele
+        onboardingConcluido: salvos.onboardingConcluido ?? Boolean(texto)
     };
 }
 
@@ -108,7 +115,10 @@ function login(event) {
     }
 
     sessionStorage.setItem(CHAVE_SESSAO, JSON.stringify(usuario));
-    window.location.href = "html/dashboard.html";
+
+    // Primeiro acesso: configuração inicial. Depois: direto para o Dashboard.
+    const { onboardingConcluido } = getDadosUsuario(usuario.id);
+    window.location.href = onboardingConcluido ? "html/dashboard.html" : "html/onboarding.html";
 }
 
 /* ===== Cadastro ===== */

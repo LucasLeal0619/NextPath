@@ -36,6 +36,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if (usuario) renderCompatibilidade();
 });
 
-window.addEventListener("storage", () => {
-    if (usuario) renderCompatibilidade();
-});
+// Redesenha a página quando os dados mudam (ver "Tempo real" no app.js)
+atualizarPagina = renderCompatibilidade;

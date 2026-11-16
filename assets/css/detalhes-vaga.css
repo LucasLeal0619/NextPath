@@ -1,0 +1,19 @@
+/* Página detalhes-vaga: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.vaga-cabecalho { display: flex; gap: 16px; padding-bottom: 24px; margin-bottom: 8px; border-bottom: 1px solid var(--border); }
+.vaga-cabecalho > i { color: var(--primary); font-size: 24px; }
+.vaga-nome { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
+.secao-titulo { margin: 24px 0 8px; font-size: 15px; font-weight: 700; }
+.texto-corrido { max-width: 640px; margin: 0; font-size: 14px; line-height: 1.7; }
+.lista-pontos { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
+.lista-pontos li { display: flex; align-items: center; gap: 14px; }
+.lista-pontos li::before { content: ""; flex-shrink: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+.lista-info { margin: 0; font-size: 14px; }
+.lista-info div { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.lista-info dt { color: var(--text-muted); font-weight: 400; }
+.lista-info dd { margin: 0; font-weight: 700; }
+.destaque { border-color: #d6e4ff; background: var(--light-blue); }
+.destaque-titulo { display: flex; align-items: center; gap: 10px; color: var(--primary); font-size: 14px; font-weight: 700; }
+.destaque-titulo i { font-size: 20px; }
+.destaque-numero { display: block; margin-top: 12px; color: var(--primary); font-size: 34px; font-weight: 800; }
+.chip-desejavel.chip-ok { border-color: #86efac; }

@@ -1,0 +1,34 @@
+/* Página onboarding: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.onboarding-topo { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 32px; border-bottom: 1px solid var(--border); background: #fff; }
+.onboarding { max-width: 820px; margin: 0 auto; padding: 40px 16px 64px; }
+.onboarding-passo { margin: 0 0 10px; color: var(--primary); font-size: 13px; font-weight: 700; }
+.onboarding-titulo { margin: 0 0 6px; font-size: 24px; font-weight: 700; }
+.onboarding .card-np { padding: 36px; }
+.onboarding h2.form-label { font-size: 14px; }
+.opcoes-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.opcao-cartao { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: #fff; color: var(--text-dark); font-size: 14px; font-weight: 600; text-align: left; transition: .2s ease; }
+.opcao-cartao i { color: var(--primary); font-size: 20px; }
+.opcao-cartao:hover { border-color: #b9cdfb; }
+.opcao-cartao[aria-pressed="true"], .opcao-pilula[aria-pressed="true"] { border-color: var(--primary); background: var(--light-blue); box-shadow: 0 0 0 1px var(--primary); }
+.opcoes-linha { display: flex; flex-wrap: wrap; gap: 10px; }
+.opcao-pilula { padding: 9px 16px; border: 1px solid var(--border); border-radius: 20px; background: #fff; color: var(--text-dark); font-size: 14px; transition: .2s ease; }
+.opcao-pilula:hover { border-color: #b9cdfb; }
+.opcao input { position: absolute; opacity: 0; }
+.opcao span { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 10px; background: #fff; font-size: 14px; cursor: pointer; transition: .2s ease; }
+.opcao input:checked + span { border-color: var(--primary); background: var(--light-blue); color: var(--primary); font-weight: 600; }
+.opcao input:focus-visible + span { outline: 3px solid #9dc1ff; }
+.chip-botao.selecionado { background: var(--light-blue); color: var(--primary); }
+.lista-escolhidas { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lista-escolhidas li { display: grid; grid-template-columns: 1fr auto 100px auto; align-items: center; gap: 16px; padding: 10px 10px 10px 16px; border-radius: 10px; background: var(--background); font-size: 14px; }
+.previa-vaga { margin-top: 16px; padding: 16px 18px; border: 1px solid #d6e4ff; border-radius: 12px; background: var(--light-blue); }
+.previa-vaga strong { display: block; }
+.onboarding-acoes { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+@media (max-width: 575px) {
+    .lista-escolhidas li { grid-template-columns: 1fr auto; }
+    .lista-escolhidas .nivel-texto { display: none; }
+    .onboarding .card-np { padding: 22px; }
+    .onboarding-topo { padding: 14px 16px; }
+    .onboarding-topo .usuario .text-end { display: none; }
+}

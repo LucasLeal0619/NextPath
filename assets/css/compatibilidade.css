@@ -1,0 +1,11 @@
+/* Página compatibilidade: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.texto-vermelho { color: var(--error); }
+.icone-quadrado.verde { --cor: var(--success); --cor-clara: #dcfce7; }
+.icone-quadrado.amarelo { --cor: var(--orange); --cor-clara: #fef3c7; }
+.icone-quadrado.vermelho { --cor: var(--error); --cor-clara: #fee2e2; }
+.progresso-grande { width: 190px; height: 190px; }
+.progresso-grande > span { width: 150px; height: 150px; font-size: 40px; }
+.resumo-requisito { display: flex; align-items: center; gap: 18px; padding: 20px; border-radius: 12px; background: var(--background); }
+.resumo-requisito > div { flex: 1; min-width: 0; }
+.resumo-requisito > div strong { font-size: 14px; }

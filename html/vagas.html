@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="icon" href="../assets/img/favicon.svg">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/vagas.css">
 </head>
 <body class="app-body">
     <aside class="sidebar">
@@ -41,19 +42,23 @@
         <header class="app-header">
             <div>
                 <h1 class="app-title">Vagas</h1>
-                <p class="app-subtitle">Explore oportunidades compatíveis com seu perfil.</p>
+                <p class="app-subtitle">As vagas que você quer, organizadas e comparadas com o seu perfil.</p>
             </div>
 
-            <a class="usuario" href="perfil.html" title="Ver perfil">
-                <span class="text-end">
-                    <strong id="usuario-nome" class="usuario-nome"></strong>
-                    <span id="usuario-cargo" class="usuario-cargo"></span>
-                </span>
-                <span id="usuario-iniciais" class="usuario-avatar"></span>
-            </a>
+            <div class="app-header-acoes">
+                <button id="botao-adicionar-vaga" class="btn btn-primary btn-np" type="button"><i class="bi bi-clipboard-plus"></i> Adicionar vaga</button>
+
+                <a class="usuario" href="perfil.html" title="Ver perfil">
+                    <span class="text-end">
+                        <strong id="usuario-nome" class="usuario-nome"></strong>
+                        <span id="usuario-cargo" class="usuario-cargo"></span>
+                    </span>
+                    <span id="usuario-iniciais" class="usuario-avatar"></span>
+                </a>
+            </div>
         </header>
 
-        <div class="d-flex gap-3 mb-3">
+        <div id="busca-e-filtros" class="d-flex gap-3 mb-3">
             <div class="busca busca-grande">
                 <i class="bi bi-search"></i>
                 <input id="busca-vaga" class="form-control" type="search" placeholder="Buscar vagas por cargo, tecnologia ou empresa..." aria-label="Buscar vagas">
@@ -79,8 +84,10 @@
                         <label for="filtro-senioridade" class="form-label">Senioridade</label>
                         <select id="filtro-senioridade" class="form-select">
                             <option value="">Todas</option>
+                            <option>Estágio</option>
                             <option>Júnior</option>
                             <option>Pleno</option>
+                            <option>Sênior</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -115,9 +122,138 @@
                     <tbody id="tabela-vagas"></tbody>
                 </table>
             </div>
+
             <p id="vagas-vazio" class="estado-vazio py-4" hidden>Nenhuma vaga encontrada com esses filtros.</p>
+
+            <div id="minhas-vazio" class="sem-vaga" hidden>
+                <i class="bi bi-clipboard-plus"></i>
+                <h2 class="card-np-title">Você ainda não adicionou vagas</h2>
+                <p class="card-np-subtitle">Encontrou uma vaga no LinkedIn, na Gupy ou no site de uma empresa?<br>Copie o texto, cole aqui e o NextPath organiza tudo para você.</p>
+                <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
+                    <button class="btn btn-primary btn-np" type="button" data-abrir-modal><i class="bi bi-clipboard-plus"></i> Colar uma vaga</button>
+                    <button id="botao-gerar-objetivo" class="btn btn-light btn-np" type="button"><i class="bi bi-bullseye"></i> Gerar pelo meu objetivo</button>
+                </div>
+            </div>
         </section>
     </main>
+
+    <!-- Modal: adicionar/editar vaga. Etapa 1 = colar o texto; etapa 2 = revisar o que foi organizado. -->
+    <div class="modal fade" id="modal-vaga" tabindex="-1" aria-labelledby="modal-vaga-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content app-modal">
+                <div class="modal-header border-0">
+                    <div>
+                        <h2 id="modal-vaga-titulo" class="modal-title fs-5 fw-bold">Adicionar vaga</h2>
+                        <p id="modal-vaga-subtitulo" class="card-np-subtitle mt-1"></p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <!-- Etapa 1: colar -->
+                <div id="etapa-colar" class="modal-body">
+                    <label for="texto-vaga" class="form-label">Cole aqui o texto completo da vaga</label>
+                    <textarea id="texto-vaga" class="form-control campo-colar" placeholder="Título da vaga, empresa, local, descrição, requisitos, diferenciais..."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="dica m-0">Funciona melhor com o texto inteiro, incluindo os títulos "Requisitos" e "Diferenciais".</span>
+                        <button id="botao-exemplo" class="btn btn-link btn-sm p-0" type="button">Usar um exemplo</button>
+                    </div>
+                    <div id="colar-message" class="auth-message" role="status" aria-live="polite"></div>
+                </div>
+
+                <!-- Etapa 2: revisar -->
+                <form id="vaga-form" class="modal-body" novalidate hidden>
+                    <p id="resumo-leitura" class="aviso"></p>
+
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label for="vaga-titulo" class="form-label">Título da vaga *</label>
+                            <input id="vaga-titulo" name="titulo" class="form-control" type="text" maxlength="90">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vaga-empresa" class="form-label">Empresa</label>
+                            <input id="vaga-empresa" name="empresa" class="form-control" type="text" maxlength="60">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vaga-local" class="form-label">Local</label>
+                            <input id="vaga-local" name="local" class="form-control" type="text" maxlength="60" placeholder="Ex.: São Paulo/SP">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vaga-modalidade" class="form-label">Modalidade</label>
+                            <select id="vaga-modalidade" name="modalidade" class="form-select">
+                                <option value="">Não informada</option>
+                                <option>Remoto</option>
+                                <option>Híbrido</option>
+                                <option>Presencial</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vaga-senioridade" class="form-label">Senioridade</label>
+                            <select id="vaga-senioridade" name="senioridade" class="form-select">
+                                <option value="">Não informada</option>
+                                <option>Estágio</option>
+                                <option>Júnior</option>
+                                <option>Pleno</option>
+                                <option>Sênior</option>
+                                <option>Especialista</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vaga-tipo" class="form-label">Contratação</label>
+                            <select id="vaga-tipo" name="tipo" class="form-select">
+                                <option value="">Não informada</option>
+                                <option>CLT</option>
+                                <option>PJ</option>
+                                <option>Estágio</option>
+                                <option>Freelancer</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <span class="form-label">Tecnologias e nível exigido *</span>
+                            <ul id="lista-tecnologias" class="lista-tecnologias"></ul>
+                            <div class="d-flex gap-2 mt-2">
+                                <input id="nova-tecnologia" class="form-control" type="text" list="sugestoes-tecnologias" placeholder="Adicionar tecnologia (ex.: Docker)" aria-label="Nova tecnologia">
+                                <datalist id="sugestoes-tecnologias"></datalist>
+                                <button id="botao-nova-tecnologia" class="btn btn-light btn-np" type="button"><i class="bi bi-plus-lg"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="vaga-descricao" class="form-label">Sobre a vaga</label>
+                            <textarea id="vaga-descricao" name="descricao" class="form-control campo-texto" maxlength="600"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vaga-requisitos" class="form-label">Requisitos <small class="text-muted">(um por linha)</small></label>
+                            <textarea id="vaga-requisitos" name="requisitos" class="form-control campo-texto"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vaga-diferenciais" class="form-label">Diferenciais <small class="text-muted">(um por linha)</small></label>
+                            <textarea id="vaga-diferenciais" name="diferenciais" class="form-control campo-texto"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vaga-atividades" class="form-label">Atividades <small class="text-muted">(uma por linha)</small></label>
+                            <textarea id="vaga-atividades" name="atividades" class="form-control campo-texto"></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input id="vaga-objetivo" name="objetivo" class="form-check-input" type="checkbox">
+                                <label for="vaga-objetivo" class="form-check-label">Esta é a vaga que eu almejo (minhas trilhas serão recomendadas a partir dela)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="vaga-message" class="auth-message" role="status" aria-live="polite"></div>
+                </form>
+
+                <div class="modal-footer border-0">
+                    <button id="botao-excluir-vaga" class="btn btn-link text-danger me-auto" type="button" hidden><i class="bi bi-trash"></i> Excluir vaga</button>
+                    <button id="botao-voltar" class="btn btn-light btn-np" type="button" hidden>Voltar</button>
+                    <button id="botao-organizar" class="btn btn-primary btn-np" type="button"><i class="bi bi-magic"></i> Organizar vaga</button>
+                    <button id="botao-salvar-vaga" class="btn btn-primary btn-np" type="submit" form="vaga-form" hidden>Salvar vaga</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modelo de uma linha da tabela (clonado pelo vagas.js) -->
     <template id="modelo-vaga">
@@ -152,6 +288,7 @@
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/catalogo.js"></script>
+    <script src="../assets/js/leitor-vaga.js"></script>
     <script src="../assets/js/vagas.js"></script>
 </body>
 </html>

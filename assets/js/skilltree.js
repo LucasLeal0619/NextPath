@@ -57,6 +57,5 @@ document.addEventListener("DOMContentLoaded", () => {
     renderLegenda("legenda");
 });
 
-window.addEventListener("storage", () => {
-    if (usuario) renderSkillTree();
-});
+// Redesenha a página quando os dados mudam (ver "Tempo real" no app.js)
+atualizarPagina = renderSkillTree;

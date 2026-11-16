@@ -1,0 +1,29 @@
+/* Página vagas: estilos usados só nesta página. O que é comum fica no style.css. */
+
+.busca-grande { flex: 1; width: auto; }
+.busca-grande .form-control { height: 52px; padding-left: 44px; border-radius: 12px; }
+.busca-grande i { left: 18px; }
+.btn-filtros { display: flex; align-items: center; gap: 10px; padding: 0 30px; border: 1px solid var(--border); border-radius: 12px; background: #fff; color: var(--text-dark); font-size: 14px; font-weight: 600; transition: .2s ease; }
+.btn-filtros i { color: var(--primary); }
+.btn-filtros:hover, .btn-filtros[aria-expanded="true"] { border-color: var(--primary); }
+.filtros { height: auto; }
+.vaga-titulo { display: flex; align-items: center; gap: 14px; }
+.vaga-titulo > i { color: var(--primary); font-size: 20px; }
+.vaga-titulo strong { display: block; }
+.vaga-compatibilidade { color: var(--text-muted); font-size: 12px; }
+.badge-modalidade { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.badge-modalidade.remoto { background: var(--light-blue); color: var(--primary); }
+.badge-modalidade.hibrido { background: #fef3c7; color: var(--orange); }
+.badge-modalidade.presencial { background: #f1f5f9; color: var(--text-muted); }
+.etiqueta-objetivo { background: #fef3c7; color: var(--orange); }
+.campo-texto { height: 110px; resize: vertical; font-size: 13px; line-height: 1.6; }
+.lista-tecnologias { display: grid; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+.tecnologia-item { display: grid; grid-template-columns: 1fr 170px auto auto; align-items: center; gap: 16px; padding: 8px 8px 8px 16px; border-radius: 10px; background: var(--background); font-size: 14px; }
+.tecnologia-item .form-select { height: 38px; padding-top: 6px; padding-bottom: 6px; font-size: 13px; }
+.tecnologia-item .form-check { padding-left: 24px; font-size: 13px; }
+
+@media (max-width: 575px) {
+    .btn-filtros { padding: 0 16px; }
+    .tecnologia-item { grid-template-columns: 1fr auto; }
+    .tecnologia-item .form-select { grid-column: 1 / -1; grid-row: 2; }
+}
